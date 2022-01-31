@@ -4,7 +4,8 @@ Simply puts the output of `df -h` in the Tmux statusbar. Please feel free to sub
 
 
 ### Format strings
-`#{df_avail}`: prints `avail` column for disk mounted as `/`
+* `#{df_avail}`: prints `avail` column for disk mounted as `/`
+* `#{df_percent}`: prints `use%` column for disk mounted as `/`
 
 
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)

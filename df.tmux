@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-df_interpolation="\#{df_avail}"
+declare -A df_interpolation_cmd
+
+df_interpolations=( "\#{df_avail}" "\#{df_percent}" )
+df_interpolation_cmd["\#{df_avail}"]=$(df -h | awk '{if ($6 == "/") {print $4}}')
+df_interpolation_cmd["\#{df_percent}"]=$(df -h | awk '{if ($6 == "/") {print $5}}')
 
 get_tmux_option() {
     local option=$1
@@ -22,9 +25,12 @@ set_tmux_option() {
 }
 
 do_interpolation() {
-    local input=$1
-	local df_output=$(df -h | awk '{if ($6 == "/") {print $4}}')
-    echo ${input/$df_interpolation/$df_output}
+    local result=$1
+    for string in "${df_interpolations[@]}"; do
+        local cmd="${df_interpolation_cmd[$string]}"
+	    result="${result/$string/$cmd}"
+    done
+    echo "$result" 
 }
 
 update_tmux_option() {
