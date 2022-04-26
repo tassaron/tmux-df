@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-declare -A df_interpolation_cmd
-
-df_interpolations=( "\#{df_avail}" "\#{df_percent}" )
-df_interpolation_cmd["\#{df_avail}"]=$(df -h | awk '{if ($6 == "/") {print $4}}')
-df_interpolation_cmd["\#{df_percent}"]=$(df -h | awk '{if ($6 == "/") {print $5}}')
+df_interpolations=(
+    "\#{df_avail}"
+    "\#{df_percent}"
+)
+df_interpolation_cmd=(
+    "$(df -h | awk '{if ($6 == "/") {print $4}}')"
+    "$(df -h | awk '{if ($6 == "/") {print $5}}')"
+)
 
 get_tmux_option() {
     local option=$1
@@ -25,10 +28,10 @@ set_tmux_option() {
 }
 
 do_interpolation() {
-    local result=$1
-    for string in "${df_interpolations[@]}"; do
+    local result="$1"
+    for ((i=0; i < ${#df_interpolations[@]}; i++)); do
         local cmd="${df_interpolation_cmd[$string]}"
-	    result="${result/$string/$cmd}"
+	    result="${result//${df_interpolations[$i]}/${df_interpolation_cmd[$i]}}"
     done
     echo "$result" 
 }
