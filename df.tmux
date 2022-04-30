@@ -5,8 +5,8 @@ df_interpolations=(
     "\#{df_percent}"
 )
 df_interpolation_cmd=(
-    "$(df -h | awk '{if ($6 == "/") {print $4}}')"
-    "$(df -h | awk '{if ($6 == "/") {print $5}}')"
+    "$(df -h / | awk '{print $4}' | tail -n 1)"
+    "$(df -h / | awk '{print $5}' | tail -n 1)"
 )
 
 get_tmux_option() {
