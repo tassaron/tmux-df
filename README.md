@@ -6,7 +6,14 @@ Simply puts the output of `df -h` in the Tmux statusbar. Please feel free to sub
 ### Format strings
 * `#{df_avail}`: prints `avail` column for disk mounted as `/`
 * `#{df_percent}`: prints `use%` column for disk mounted as `/`
+* `#{df_avail_private[1-5]}`: prints `avail` column for disk mounted as defined by `df_cmd_private[1-5]`
+* `#{df_percent_private[1-5]}`: prints `use%` column for disk mounted as defined by `df_cmd_private[1-5]`
 
+Define more mounted points such as:
+```
+set -g @df_cmd_private1 "$HOME/code"
+set -g @df_cmd_private2 "/dev"
+```
 
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)
 
