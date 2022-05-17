@@ -35,18 +35,18 @@ df_interpolations=(
     "\#{df_percent_private5}"
 )
 df_interpolation_cmd=(
-    "$(df -h / | awk '{print $4}' | tail -n 1)"
-    "$(df -h / | awk '{print $5}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[0]} | awk '{print $4}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[0]} | awk '{print $5}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[1]} | awk '{print $4}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[1]} | awk '{print $5}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[2]} | awk '{print $4}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[2]} | awk '{print $5}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[3]} | awk '{print $4}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[3]} | awk '{print $5}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[4]} | awk '{print $4}' | tail -n 1)"
-    "$(df -h ${DF_CMD_PRIVATE[4]} | awk '{print $5}' | tail -n 1)"
+    "df -h / | awk '{print \$4}' | tail -n 1"
+    "df -h / | awk '{print \$5}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[0]} | awk '{print \$4}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[0]} | awk '{print \$5}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[1]} | awk '{print \$4}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[1]} | awk '{print \$5}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[2]} | awk '{print \$4}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[2]} | awk '{print \$5}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[3]} | awk '{print \$4}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[3]} | awk '{print \$5}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[4]} | awk '{print \$4}' | tail -n 1"
+    "df -h ${DF_CMD_PRIVATE[4]} | awk '{print \$5}' | tail -n 1"
 )
 
 set_tmux_option() {
@@ -58,8 +58,9 @@ set_tmux_option() {
 do_interpolation() {
     local result="$1"
     for ((i=0; i < ${#df_interpolations[@]}; i++)); do
-        local cmd="${df_interpolation_cmd[$string]}"
-	    result="${result//${df_interpolations[$i]}/${df_interpolation_cmd[$i]}}"
+        local cmd="${df_interpolation_cmd[$i]}"
+        cmd="#(${cmd})"
+	    result="${result//${df_interpolations[$i]}/${cmd}}"
     done
     echo "$result"
 }
