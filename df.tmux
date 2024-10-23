@@ -75,5 +75,14 @@ update_tmux_option() {
 main() {
 	update_tmux_option "status-right"
 	update_tmux_option "status-left"
+	local num_status_lines=$(get_tmux_option "status" "on")
+	case $num_status_lines in
+        #  status can be 'on', 'off', or a number from 2-5
+		''|*[!2-5]*) num_status_lines=1 ;;
+		*) ;;
+	esac
+	for ((i=0; i < "$num_status_lines"; i++)); do
+		update_tmux_option "status-format[$i]"
+	done
 }
 main
